@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Loja Online - Cuide dos seus Cachos</title>
+    <style>
+        /* Estilos globais */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #e91e63; /* Rosa vibrante */
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        header p {
+            font-size: 1.2rem;
+        }
+
+        /* Barra de navegação */
+        nav {
+            background-color: #d81b60; /* Tom de rosa mais forte */
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #f48fb1;
+            border-radius: 5px;
+        }
+
+        /* Página */
+        .pagina {
+            display: none;
+        }
+
+        /* Produtos */
+        .container-produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .produto {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .produto:hover {
+            transform: translateY(-10px);
+        }
+        .produto img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .produto h3 {
+            margin: 15px 0;
+            font-size: 1.6rem;
+        }
+        .produto p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .produto .preco {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2a9d8f;
+            margin-bottom: 15px;
+        }
+        .produto button {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .produto button:hover {
+            background-color: #21867a;
+        }
+
+        /* Carrinho */
+        .carrinho {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .carrinho .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .carrinho .item:last-child {
+            border-bottom: none;
+        }
+        .carrinho .item p {
+            margin: 0;
+        }
+        .carrinho .item .quantidade {
+            font-weight: bold;
+            color: #e91e63;
+        }
+        .carrinho .total {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+        }
+        .carrinho button {
+            background-color: #e91e63;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .carrinho button:hover {
+            background-color: #c2185b;
+        }
+
+        /* Banner Motivacional */
+        .motivacional-container {
+            overflow: hidden;
+            background-color: #f8bbd0;
+            padding: 15px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e91e63;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .motivacional-slider {
+            display: flex;
+            animation: scroll 15s linear infinite;
+            white-space: nowrap;
+        }
+
+        .motivacional-slider p {
+            padding: 10px;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container-produtos {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Loja Online - Cuide dos seus Cachos</h1>
+        <p>Empoderamento e autoestima para você e seus cachos naturais!</p>
+    </header>
+
+    <!-- Navegação -->
+    <nav>
+        <a href="#" onclick="exibirPagina('home')">Início</a>
+        <a href="#" onclick="exibirPagina('produtos')">Produtos</a>
+        <a href="#" onclick="exibirPagina('carrinho')">Carrinho</a>
+        <a href="#" onclick="exibirPagina('login')">Login</a>
+        <a href="#" onclick="exibirPagina('cadastro')">Cadastro</a>
+    </nav>
+
+    <!-- Página Inicial -->
+    <div id="home" class="pagina" style="display: block;">
+        <div class="motivacional-container">
+            <div class="motivacional-slider">
+                <p>Seus cachos são sua coroa! Cuide deles com amor.</p>
+                <p>Você é linda do jeitinho que é, com os cabelos naturais ou não!</p>
+                <p>Ame o que é natural, ame seu cabelo!</p>
+                <p>Seus cachos, sua força. Brilhe do seu jeito!</p>
+                <p>A beleza dos seus cachos é única, assim como você!</p>
+                <p>Seja orgulhosa dos seus cabelos naturais, eles são sua identidade!</p>
+                <p>Seus cachos são poderosos, mostre ao mundo quem você é!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Login -->
+    <div id="login" class="pagina">
+        <div class="auth-container">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="E-mail" required>
+            <input type="password" id="loginSenha" placeholder="Senha" required>
+            <button onclick="fazerLogin()">Entrar</button>
+            <div class="switch">
+                <p>Ainda não tem conta? <a href="#" onclick="exibirPagina('cadastro')">Cadastre-se</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Cadastro -->
+    <div id="cadastro" class="pagina">
+        <div class="auth-container">
+            <h2>Cadastro</h2>
+            <input type="email" id="cadastroEmail" placeholder="E-mail" required>
+            <input type="password" id="cadastroSenha" placeholder="Senha" required>
+            <input type="password" id="confirmarSenha" placeholder="Confirmar Senha" required>
+            <button onclick="fazerCadastro()">Cadastrar</button>
+            <div class="switch">
+                <p>Já tem uma conta? <a href="#" onclick="exibirPagina('login')">Faça Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Produtos -->
+    <div id="produtos" class="pagina">
+        <div class="container-produtos">
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 1">
+                <h3>Creme Definição Intensa</h3>
+                <p>Realça e mantém a forma dos cachos, com definição duradoura e controle de frizz.</p>
+                <p class="preco">R$ 17,99</p>
+                <button onclick="adicionarAoCarrinho('Creme Definição Intensa', 17.99)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 2">
+                <h3>Creme Hidratação Profunda</h3>
+                <p>Hidrata profundamente, deixando os cachos macios, soltos e com brilho saudável.</p>
+                <p class="preco">R$ 19,99</p>
+                <button onclick="adicionarAoCarrinho('Creme Hidratação Profunda', 19.99)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 3">
+                <h3>Creme Controle e Nutrição</h3>
+                <p>Reduz o volume, nutrindo e definindo os cachos sem deixá-los pesados.</p>
+                <p class="preco">R$ 18,99</p>
+                <button onclick="adicionarAoCarrinho('Creme Controle e Nutrição', 18.99)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 4">
+                <h3>Máscara Nutrição Profunda</h3>
+                <p>Restauradora e nutritiva, revitaliza os cachos, deixando-os hidratados e fortes.</p>
+                <p class="preco">R$ 24,99</p>
+                <button onclick="adicionarAoCarrinho('Máscara Nutrição Profunda', 24.99)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 5">
+                <h3>Máscara Revitalizante</h3>
+                <p>Devolve o brilho e elasticidade dos cachos com óleo de abacate e babosa.</p>
+                <p class="preco">R$ 25,99</p>
+                <button onclick="adicionarAoCarrinho('Máscara Revitalizante', 25.99)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="produto">
+                <img src="https://via.placeholder.com/250x200" alt="Produto 6">
+                <h3>Óleo Reparador de Pontas</h3>
+                <p>Enriquecido com óleo de coco e babosa, sela as pontas duplas e oferece brilho intenso.</p>
+                <p class="preco">R$ 12,99</p>
+                <button onclick="adicionarAoCarrinho('Óleo Reparador de Pontas', 12.99)">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página do Carrinho -->
+    <div id="carrinho" class="pagina">
+        <h2>Carrinho de Compras</h2>
+        <div id="carrinhoItens" class="carrinho">
+            <!-- Itens do carrinho serão adicionados aqui -->
+        </div>
+    </div>
+
+    <script>
+        // Funções para navegação
+        function exibirPagina(pagina) {
+            document.querySelectorAll('.pagina').forEach(function(element) {
+                element.style.display = 'none';
+            });
+            document.getElementById(pagina).style.display = 'block';
+        }
+
+        // Função de login
+        function fazerLogin() {
+            let email = document.getElementById('loginEmail').value;
+            let senha = document.getElementById('loginSenha').value;
+            alert('Login realizado com sucesso!');
+            exibirPagina('produtos');
+        }
+
+        // Função de cadastro
+        function fazerCadastro() {
+            let email = document.getElementById('cadastroEmail').value;
+            let senha = document.getElementById('cadastroSenha').value;
+            let confirmarSenha = document.getElementById('confirmarSenha').value;
+            if (senha === confirmarSenha) {
+                alert('Cadastro realizado com sucesso!');
+                exibirPagina('login');
+            } else {
+                alert('As senhas não coincidem!');
+            }
+        }
+
+        // Carrinho de Compras
+        function adicionarAoCarrinho(produto, preco) {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            let produtoExistente = carrinho.find(item => item.produto === produto);
+
+            if (produtoExistente) {
+                produtoExistente.quantidade += 1;
+            } else {
+                carrinho.push({ produto, preco, quantidade: 1 });
+            }
+
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            exibirCarrinho();
+        }
+
+        // Função de remover item
+        function removerDoCarrinho(produto) {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            carrinho = carrinho.filter(item => item.produto !== produto);
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            exibirCarrinho();
+        }
+
+        // Exibir itens do carrinho
+        function exibirCarrinho() {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            let carrinhoItens = document.getElementById('carrinhoItens');
+            carrinhoItens.innerHTML = '';
+
+            let total = 0;
+            carrinho.forEach(item => {
+                carrinhoItens.innerHTML += `
+                    <div class="item">
+                        <p>${item.produto}</p>
+                        <p class="quantidade">Quantidade: ${item.quantidade}</p>
+                        <p>R$ ${(item.preco * item.quantidade).toFixed(2)}</p>
+                        <button onclick="removerDoCarrinho('${item.produto}')">Remover</button>
+                    </div>
+                `;
+                total += item.preco * item.quantidade;
+            });
+
+            carrinhoItens.innerHTML += `
+                <div class="total">
+                    Total: R$ ${total.toFixed(2)}
+                </div>
+                <button onclick="finalizarCompra()">Finalizar Compra</button>
+            `;
+        }
+
+        function finalizarCompra() {
+            alert('Compra finalizada com sucesso!');
+            localStorage.removeItem('carrinho');
+            exibirCarrinho();
+        }
+    </script>
+
+</body>
+</html>
